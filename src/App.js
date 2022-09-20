@@ -1,25 +1,78 @@
-import logo from './logo.svg';
-import './App.css';
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { deleteObject, ref } from "firebase/storage";
+import { useState } from "react";
+import BarStories from "./Components/BarStories";
+import ButtonPost from "./Components/ButtonPost";
+import Story from "./Components/Story";
+import fb from "./FireBase";
+
+
+
+
+
+
 
 function App() {
+
+  const [loading, setLoading] = useState(false)
+  postPeriodDelete()
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <>
+    {loading && 
+      <>
+        <span className="title">L u a n n o f e g r a m</span>
+        <ButtonPost />
+        <BarStories>
+          <Story />
+        </BarStories>
+      </>
+      }
+    </>
   );
+
+
+  async function postPeriodDelete() {
+    let posts = await getDocs(collection(fb.db, 'posts'))
+    let now = new Date()
+  
+    return new Promise((resolve, reject) => {
+
+      let i = 0
+      
+      posts.docs.forEach(async (post) => {
+
+        if (post.data().created != 'un') {
+          let time = new Date(post.data().created.toDate())
+  
+          if ((now - time) > 86400000) {
+            await deleteStory(post)    
+          } 
+        }
+
+        i ++
+        if (i == posts.docs.length) {
+          console.log('setando timeout')
+          setTimeout(() => {
+            resolve(setLoading(true))
+          }, 2000)
+        } 
+
+      })
+    })
+
+
+  
+    async function deleteStory(post) {
+      let storRef = ref(fb.storage, post.data().ref)
+      deleteObject(storRef).then(() => {
+        deleteDoc(doc(fb.db, post.ref.path)).then(console.log('deletado tb'))
+      })
+    }
+  }
 }
+
 
 export default App;

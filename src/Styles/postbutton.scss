@@ -1,0 +1,86 @@
+.post_div {
+    display: flex;
+    align-items: center;
+    background-color: #1a1a1a;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 1%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    
+    span {
+        color: #ffffff;
+        font-size: 2em;
+    }
+    
+    .input_parent {
+        display: flex;
+        gap: 5%;
+        
+        input {
+            color: grey;
+        }
+        
+    }
+}
+
+.send_pic_div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1a1a1a;
+    z-index: 11;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+
+    .story_template {
+        background-color: rgb(133, 133, 133);
+        width: 424px;
+        height: 754px;
+        border-radius: 8px;
+        overflow: hidden;
+        transform-origin: center;
+        transition: 1s;
+        font-size: 1.1em;
+    }
+
+    .template_sliders {
+        color: white;
+        font-size: 1.7em;
+
+        form {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+    }
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    gap: 5%;
+
+    button {
+        width: 50%;
+        transition: 0.5s;
+        border-radius: 4px;
+    }
+
+    button:hover{
+        color: white;
+    }
+
+    .send_button {
+        background-color: green;
+    }
+
+    .cancel_button {
+        background-color: rgb(145, 0, 0);
+    }
+}

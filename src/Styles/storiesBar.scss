@@ -1,0 +1,40 @@
+$background_color: #1a1a1a;
+
+.stories_bar {
+    display: flex;
+    width: 100vw;
+    max-width: 100vw;
+}
+
+.story_selector {
+    width: 424px;
+    height: 754px;
+}
+
+.story_navigator_button {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    background-color: rgba(92, 92, 92, 0.418);
+    color: $background_color;
+    font-size: 2em;
+    border-radius: 44px;
+    padding: 0px;
+    border: none;
+    transition: 0.5s;
+}
+.story_navigator_button:hover {
+    background-color: rgb(151, 150, 150);
+    transition: 0.5;
+}
+
+@media (max-width: 600px) {
+    .stories_bar {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+}
