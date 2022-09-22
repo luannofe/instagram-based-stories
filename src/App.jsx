@@ -24,6 +24,9 @@ function App() {
     {loading && 
       <>
         <span className="title">L u a n n o f e g r a m</span>
+        <a href="https://github.com/saskickers">
+          <img style={{width: '24px', height: '24px', filter: 'invert(100%)', position: 'absolute', right: '5px', top: '5px'}} src="./githubIcon.png" ></img>
+        </a>
         <ButtonPost />
         <BarStories>
           <Story />

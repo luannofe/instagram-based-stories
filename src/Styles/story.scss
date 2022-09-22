@@ -73,7 +73,16 @@
             gap: 10px;
 
 
-
+            .like_button {
+                background-image: url('../../public/Like.svg');
+                background-size: 64px;
+                background-position: 50%;
+                background-color: transparent;
+                background-repeat: no-repeat;
+                border: none;
+                width: 24px;
+                height: 24px;
+            }
 
             .story_bottom_answer {
                 border: 1px white solid;
@@ -129,7 +138,6 @@
     img {
         border-radius: 50%;
         width: 30%;
-        background-color: white;
     }
 
 }
