@@ -28,7 +28,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
     height: 100vh;
     background-color: #1a1a1a;
     z-index: 11;
@@ -83,4 +82,11 @@
     .cancel_button {
         background-color: rgb(145, 0, 0);
     }
+}
+
+@media (max-width: 600px) {
+    .send_pic_div {
+        z-index: 91;
+    }
+
 }

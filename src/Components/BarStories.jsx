@@ -26,19 +26,36 @@ export default function BarStories(props) {
 
     const story_size = {height: 754, width: 424, scaledWidth: 275.6}
     
+
     //load stories 
     useEffect(() => {
-        ////console.log('renderizou')
+
+        //touch to next story func
+        document.getElementById('story_selector').onclick = (e) => {
+
+            const story_previous_button = document.getElementById('previous_story_button')
+            const story_next_button = document.getElementById('next_story_button')
+
+            if (window.innerWidth <= 600 && loadedPosts.length > 0) {
+                if (e.clientX > window.innerWidth/2) {
+                    story_next_button.click()
+                } else {
+                    story_previous_button.click()
+                }
+            }
+        }
+
         if (loadedPosts.length == 0) {
             (async () => {
-                //console.log('oi')
   
                 return setLoadedPosts( await get_posts())
             })()
         } else {
+
+
             setSelectedStoryPar(0)
-            //console.log('load posts use effect')
             organize()
+
 
         } 
 
@@ -65,7 +82,6 @@ export default function BarStories(props) {
     useEffect(() => {
         if (paused) {
             pausedBuffer = true
-            //console.log('pausou, paused: ', pausedBuffer)
         }
 
     }, [paused])
@@ -92,12 +108,17 @@ export default function BarStories(props) {
                 clearInterval(timerInterval)
             })
 
-            //console.log(document.getElementById('stories_bar_div'))
             let pause_bt_id = 'story_' + selectedStoryPar + '_pause_button'
             document.getElementById(pause_bt_id).onclick = () => {
                 pausedBuffer = !pausedBuffer
             }
+            return () => { 
+
+                clearInterval(timerInterval)
+            }
         }
+
+        
     }, [selectedStoryPar])
 
 
@@ -120,7 +141,6 @@ export default function BarStories(props) {
     function nextStory(bool) {
 
         return e => {
-            //console.log(bool)
 
             let newSelectedStory = selectedStory + bool
 
@@ -129,29 +149,9 @@ export default function BarStories(props) {
             }
 
             selectedStory = newSelectedStory
-            //console.log(`next story (${newSelectedStory})`)
             setSelectedStoryPar(newSelectedStory)
 
-            for (let post in loadedPosts) {
-                let id_acessor = 'story_' + loadedPosts[post].screenId
-                let story_dom = document.getElementById(id_acessor)
-
-                if (post != selectedStory) {
-
-                    let storyoffset = ((window.innerWidth/2) - (story_size.scaledWidth)/2) 
-                    let storyoffset_order = ((story_size.width) * (post - selectedStory))
-                    let transform_string = `translate(${storyoffset + storyoffset_order}px,0) scale(0.65)`
-                    ////console.log(`Next post, TRANSFORM STRING: ${transform_string}`)
-                    storyoffset_order < 0 ? story_dom.style.transformOrigin = '-50%' : story_dom.style.transformOrigin = '50%'
-                    story_dom.style.transform = transform_string
-                    
-                } else {
-
-                    let storyoffset = ((window.innerWidth/2) - (story_size.width)/2)
-                    story_dom.style.transform = "translate(+"+ String(storyoffset)+"px,0)"
-                    ////console.log(`Story initial x: ${storyoffset}, story width: ${story_size.width} , middle screen: ${window.innerWidth/2}`)
-                }
-            }
+            organize()
         }
     }
 
@@ -167,17 +167,20 @@ export default function BarStories(props) {
         let button_offset = ((window.innerWidth/2) + story_size.width/2) + 4
         let vertical_offset = (stories_bar_div.clientHeight/2)
 
-        //story
-        story_selector_div.style.transform = "translate(+"+ String(selector_offset)+"px,0)"
-        //left button
-        story_previous_button.style.transform = "translate(+"+ String(selector_offset - story_previous_button.offsetWidth - 4)+"px, " + String(vertical_offset - 44) + "px)"
-        //right button
-        story_next_button.style.transform = "translate(+"+ String(button_offset)+"px, " + String(vertical_offset - (44)) + "px)"
 
 
-        ////console.log('ORGANIZING...')
+
         //sort stories
         if (stories_bar_div.clientWidth > 600) {
+
+            //story
+            story_selector_div.style.transform = `translate(${selector_offset}px,0px)`
+            //left button                              
+            story_previous_button.style.transform = `translate(${(selector_offset - story_previous_button.offsetWidth - 4)}px, ${(vertical_offset - 44)}px)`
+            //right button
+            story_next_button.style.transform = `translate(${button_offset}px, ${(vertical_offset - 44)}px)`
+
+
             for (let post in loadedPosts) {
                 let id_acessor = 'story_' + loadedPosts[post].screenId
                 let story_dom = document.getElementById(id_acessor)
@@ -185,18 +188,19 @@ export default function BarStories(props) {
                 if (post != selectedStory) {
         
                     let storyoffset = ((stories_bar_div.clientWidth/2) - (story_size.scaledWidth)/2) 
+
                     let storyoffset_order = ((story_size.width) * (post - selectedStory))
-                    let transform_string = "translate("+ String(storyoffset + storyoffset_order)+"px,0) scale(0.65)"
-                    story_dom.style.transform = transform_string
-                    ////console.log(`Story initial x: ${storyoffset}, story offset: ${storyoffset_order}, story width: ${story_size.scaledWidth} , middle screen: ${window.innerWidth/2}, TRANSFORM STRING: ${transform_string}`)
+                    story_dom.style.transform = `translate( ${storyoffset+ storyoffset_order}px, 0) scale(0.65)`
                 } else {
         
                     let storyoffset = ((stories_bar_div.clientWidth/2) - (story_size.width)/2)
                     story_dom.style.transform = "translate("+ String(storyoffset)+"px,0)"
-                    ////console.log(`selected, story initial x: ${storyoffset}, story width: ${story_size.width} , middle screen: ${window.innerWidth/2}`)
                 }
             }
         } else {
+
+            story_selector_div.style.transform = "translate(0px,0)"
+
             for (let post in loadedPosts) {
                 let id_acessor = 'story_' + loadedPosts[post].screenId
                 let story_dom = document.getElementById(id_acessor)
@@ -205,11 +209,10 @@ export default function BarStories(props) {
                     story_dom.style.transform = "translate(0,0)"
                 } else {
                     let storyoffset_order = ((stories_bar_div.clientWidth) * (post - selectedStory)) 
-                    story_dom.style.transform = "translate("+ String(storyoffset_order)+"px,0)"
+                    story_dom.style.transform = `translate(${storyoffset_order}px, 0px)`
                 }
             }
         }
-        ////console.log('ENDED ORGANIZING...')
         
     }
 

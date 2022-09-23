@@ -29,6 +29,13 @@ $background_color: #1a1a1a;
 }
 
 @media (max-width: 600px) {
+
+    .story_selector {
+        width: 100vw;
+        height: 100vh;
+        z-index: 90;
+    }
+
     .stories_bar {
         position: relative;
         top: 0;
@@ -36,5 +43,6 @@ $background_color: #1a1a1a;
         right: 0;
         width: 100vw;
         height: 100vh;
+        overflow: hidden;
     }
 }
