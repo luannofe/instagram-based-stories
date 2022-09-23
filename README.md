@@ -1,4 +1,4 @@
-# Instagram Stories Clone - ReactJS, Firestore, Firebase Storage
+# Instagram Stories App - ReactJS, Firestore, Firebase Storage
 
 ## Description
 
